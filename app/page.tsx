@@ -1,5 +1,3 @@
-import Script from "next/script"
-
 import { SiteHeader } from "@/components/site-header"
 import { SiteFooter } from "@/components/site-footer"
 import { Hero } from "@/components/hero"
@@ -15,49 +13,78 @@ export default function HomePage() {
 
       <main className="flex-1">
 
-        {/* HERO */}
         <Hero />
 
-        {/* 🔥 AD 1 (after hero - high CTR) */}
-        <div className="my-6 flex justify-center">
-          <Script
-            src="https://pl30123077.effectivecpmnetwork.com/c483387c5ce2665f5c8dc04518be2c7c/invoke.js"
-            strategy="afterInteractive"
-          />
-          <div id="container-c483387c5ce2665f5c8dc04518be2c7c"></div>
-        </div>
+        {/* 🔥 BANNER AD (1) */}
+        <AdBanner />
 
-        {/* POPULAR TOOLS */}
         <PopularTools />
 
-        {/* 🔥 AD 2 (middle - best revenue spot) */}
-        <div className="my-10 flex justify-center">
-          <div
-            dangerouslySetInnerHTML={{
-              __html: `
-                <script>
-                  atOptions = {
-                    'key' : 'ecc4afc5b67ca88efe9cb93a11d4b9c5',
-                    'format' : 'iframe',
-                    'height' : 250,
-                    'width' : 300,
-                    'params' : {}
-                  };
-                </script>
-                <script src="https://www.highperformanceformat.com/ecc4afc5b67ca88efe9cb93a11d4b9c5/invoke.js"></script>
-              `,
-            }}
-          />
-        </div>
+        {/* 🔥 NATIVE AD (1) */}
+        <AdNative />
 
-        {/* बाकी sections */}
         <CategoriesSection />
+
+        {/* 🔥 BANNER AD (2) */}
+        <AdBanner />
+
         <FeaturesSection />
+
         <FaqSection />
+
+        {/* 🔥 NATIVE AD (2) */}
+        <AdNative />
+
+        {/* 🔥 BANNER AD (3 - Footer safe) */}
+        <AdBanner />
 
       </main>
 
       <SiteFooter />
+    </div>
+  )
+}
+
+/* ================= BANNER AD ================= */
+function AdBanner() {
+  return (
+    <div className="my-8 flex justify-center">
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `
+            <script async="async" data-cfasync="false"
+              src="https://www.highperformanceformat.com/ecc4afc5b67ca88efe9cb93a11d4b9c5/invoke.js"></script>
+
+            <script>
+              atOptions = {
+                'key' : 'ecc4afc5b67ca88efe9cb93a11d4b9c5',
+                'format' : 'iframe',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+              };
+            </script>
+          `,
+        }}
+      />
+    </div>
+  )
+}
+
+/* ================= NATIVE AD ================= */
+function AdNative() {
+  return (
+    <div className="my-10 flex justify-center">
+      <div
+        dangerouslySetInnerHTML={{
+          __html: `
+            <script async="async" data-cfasync="false"
+              src="https://pl30123077.effectivecpmnetwork.com/c483387c5ce2665f5c8dc04518be2c7c/invoke.js"></script>
+
+            <div id="container-c483387c5ce2665f5c8dc04518be2c7c"></div>
+          `,
+        }}
+      />
     </div>
   )
 }
