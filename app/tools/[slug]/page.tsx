@@ -8,6 +8,8 @@ import { ToolRunner } from "@/components/tools/tool-runner"
 import { getTool, tools } from "@/lib/tools"
 import { cn } from "@/lib/utils"
 
+const BASE_URL = "https://toolboxar-project.vercel.app"
+
 export function generateStaticParams() {
   return tools.map((t) => ({ slug: t.slug }))
 }
@@ -19,10 +21,42 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params
   const tool = getTool(slug)
-  if (!tool) return { title: "Tool not found — Toolbox" }
+
+  if (!tool) {
+    return {
+      title: "Tool Not Found | Toolbox",
+      description: "The requested tool could not be found.",
+    }
+  }
+
+  const url = `${BASE_URL}/tools/${tool.slug}`
+
   return {
-    title: `${tool.name} — Toolbox`,
+    title: `${tool.name} - Free Online Tool | Toolbox`,
     description: tool.description,
+
+    alternates: {
+      canonical: url,
+    },
+
+    openGraph: {
+      title: `${tool.name} - Free Online Tool | Toolbox`,
+      description: tool.description,
+      url,
+      siteName: "Toolbox",
+      type: "website",
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: `${tool.name} - Free Online Tool | Toolbox`,
+      description: tool.description,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
   }
 }
 
@@ -33,13 +67,17 @@ export default async function ToolPage({
 }) {
   const { slug } = await params
   const tool = getTool(slug)
+
   if (!tool) notFound()
 
-  const related = tools.filter((t) => t.category === tool.category && t.slug !== tool.slug).slice(0, 3)
+  const related = tools
+    .filter((t) => t.category === tool.category && t.slug !== tool.slug)
+    .slice(0, 3)
 
   return (
     <div className="flex min-h-dvh flex-col">
       <SiteHeader />
+
       <main className="flex-1">
         <ToolShell tool={tool}>
           <ToolRunner slug={tool.slug} />
@@ -48,20 +86,32 @@ export default async function ToolPage({
         {related.length > 0 && (
           <section className="border-t border-border bg-card">
             <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-              <h2 className="text-lg font-semibold">Related tools</h2>
+              <h2 className="text-lg font-semibold">
+                Related tools
+              </h2>
+
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {related.map((t) => {
                   const Icon = t.icon
+
                   return (
                     <Link
                       key={t.slug}
                       href={`/tools/${t.slug}`}
                       className="flex items-center gap-3 rounded-xl border border-border bg-background p-3 transition-colors hover:border-primary/30"
                     >
-                      <span className={cn("flex size-9 items-center justify-center rounded-lg", t.accent)}>
+                      <span
+                        className={cn(
+                          "flex size-9 items-center justify-center rounded-lg",
+                          t.accent
+                        )}
+                      >
                         <Icon className="size-4" />
                       </span>
-                      <span className="text-sm font-medium">{t.name}</span>
+
+                      <span className="text-sm font-medium">
+                        {t.name}
+                      </span>
                     </Link>
                   )
                 })}
@@ -70,6 +120,7 @@ export default async function ToolPage({
           </section>
         )}
       </main>
+
       <SiteFooter />
     </div>
   )
