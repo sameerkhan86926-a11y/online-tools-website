@@ -13,7 +13,14 @@ export const metadata: Metadata = {
   title: 'Toolbox — Free Online PDF & Image Tools',
   description:
     'Convert, compress, merge and edit PDFs and images right in your browser. Fast, private, and free online tools for documents and images.',
+
+  // 👇 Google Search Console verification
+  verification: {
+    google: 'google0129c4b0a982fe99',
+  },
+
   generator: 'v0.app',
+
   icons: {
     icon: [
       {
