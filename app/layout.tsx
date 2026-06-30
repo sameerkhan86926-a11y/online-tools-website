@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
   // 👇 Google Search Console verification
   verification: {
-    google: 'google0129c4b0a982fe99',
+    google: 'BC0Gha8LWi95jKahYLbCvNSabSKM1miCB67wpdkyuCM',
   },
 
   generator: 'v0.app',
