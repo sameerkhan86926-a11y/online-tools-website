@@ -1,3 +1,18 @@
+import { Analytics } from '@vercel/analytics/next'
+import type { Metadata, Viewport } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import './globals.css'
+
+const geistSans = Geist({
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
+
+const geistMono = Geist_Mono({
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://pdftoolbox.shop'),
 
@@ -28,7 +43,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: 'https://pdftoolbox.shop',
+    canonical: '/',
   },
 
   openGraph: {
@@ -56,8 +71,6 @@ export const metadata: Metadata = {
     images: ['/og-image.png'],
   },
 
-  generator: 'Next.js',
-
   icons: {
     icon: [
       {
@@ -75,4 +88,38 @@ export const metadata: Metadata = {
     ],
     apple: '/apple-icon.png',
   },
+
+  generator: 'Next.js',
+}
+
+export const viewport: Viewport = {
+  colorScheme: 'light dark',
+  themeColor: [
+    {
+      media: '(prefers-color-scheme: light)',
+      color: 'white',
+    },
+    {
+      media: '(prefers-color-scheme: dark)',
+      color: 'black',
+    },
+  ],
+}
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${geistMono.variable}`}
+    >
+      <body className="bg-background font-sans antialiased">
+        {children}
+        {process.env.NODE_ENV === 'production' && <Analytics />}
+      </body>
+    </html>
+  )
 }
