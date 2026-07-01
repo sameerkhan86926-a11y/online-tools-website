@@ -5,7 +5,6 @@ import { Download, RotateCcw, ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FileDropzone } from "@/components/file-dropzone"
 import {
-  loadImage,
   downloadBlob,
   formatBytes,
   stripExtension,
@@ -25,6 +24,26 @@ export function ImageConverter({ target }: { target: "png" | "jpg" }) {
   const mime = target === "png" ? "image/png" : "image/jpeg"
   const ext = target === "png" ? "png" : "jpg"
 
+  // ✅ SAFE IMAGE LOADER (FIXED)
+  function loadImageSafe(file: File): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      const url = URL.createObjectURL(file)
+
+      img.onload = () => {
+        URL.revokeObjectURL(url)
+        resolve(img)
+      }
+
+      img.onerror = () => {
+        URL.revokeObjectURL(url)
+        reject(new Error("Image failed to load"))
+      }
+
+      img.src = url
+    })
+  }
+
   async function handleFiles(files: File[]) {
     setBusy(true)
     setError(null)
@@ -33,7 +52,7 @@ export function ImageConverter({ target }: { target: "png" | "jpg" }) {
       const results: Converted[] = []
 
       for (const file of files) {
-        const img = await loadImage(file)
+        const img = await loadImageSafe(file)
 
         const canvas = document.createElement("canvas")
         const ctx = canvas.getContext("2d")
@@ -43,7 +62,7 @@ export function ImageConverter({ target }: { target: "png" | "jpg" }) {
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
 
-        // white background for JPG conversion
+        // white background for JPG
         if (target === "jpg") {
           ctx.fillStyle = "#ffffff"
           ctx.fillRect(0, 0, canvas.width, canvas.height)
@@ -51,7 +70,6 @@ export function ImageConverter({ target }: { target: "png" | "jpg" }) {
 
         ctx.drawImage(img, 0, 0)
 
-        // SAFE toBlob (IMPORTANT FIX)
         const blob = await new Promise<Blob>((resolve, reject) => {
           canvas.toBlob(
             (b) => {
@@ -74,13 +92,8 @@ export function ImageConverter({ target }: { target: "png" | "jpg" }) {
 
       setItems((prev) => [...prev, ...results])
     } catch (e) {
-      console.error("CONVERSION ERROR:", e)
-
-      setError(
-        e instanceof Error
-          ? e.message
-          : "Could not convert images. Please try a different file."
-      )
+      console.error(e)
+      setError("Could not convert images. Please try a different file.")
     } finally {
       setBusy(false)
     }
@@ -147,7 +160,11 @@ export function ImageConverter({ target }: { target: "png" | "jpg" }) {
 
                 <Button
                   size="sm"
-                  onClick={() => downloadBlob(item.url as any, item.name)}
+                  onClick={() =>
+                    fetch(item.url)
+                      .then((r) => r.blob())
+                      .then((b) => downloadBlob(b, item.name))
+                  }
                 >
                   <Download className="size-4" />
                   Download
