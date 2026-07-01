@@ -111,7 +111,22 @@ export default function RootLayout({
     >
       <body className="bg-background font-sans antialiased">
 
-        {/* 🔥 SCHEMA (PROPER WAY) */}
+        {/* 🔥 GA4 (GOOGLE ANALYTICS) */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+          strategy="afterInteractive"
+        />
+
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-XXXXXXXXXX');
+          `}
+        </Script>
+
+        {/* 🔥 SCHEMA */}
         <Script
           id="schema-org"
           type="application/ld+json"
@@ -119,18 +134,20 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "WebSite",
+              "@type": "WebApplication",
               name: "PDFToolbox",
               url: "https://pdftoolbox.shop",
               description:
                 "Free online PDF and image tools to compress, merge, split and convert files instantly.",
+              applicationCategory: "Utility",
+              operatingSystem: "Web Browser",
             }),
           }}
         />
 
         {children}
 
-        {/* 🔥 ANALYTICS */}
+        {/* 🔥 ANALYTICS (VERCEL) */}
         {process.env.NODE_ENV === 'production' && <Analytics />}
 
         {/* 🔥 COOKIE BANNER */}
