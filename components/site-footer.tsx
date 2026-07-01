@@ -58,7 +58,7 @@ export function SiteFooter() {
         </div>
 
         {/* BOTTOM SECTION */}
-        <div className="mt-12 border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-12 border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-5">
 
           {/* COPYRIGHT */}
           <p className="text-sm text-muted-foreground">
@@ -72,20 +72,22 @@ export function SiteFooter() {
             <Link href="/contact" className="hover:text-foreground">Support</Link>
           </div>
 
-          {/* SOCIAL ICONS */}
+          {/* SOCIAL ICONS (FIXED) */}
           <div className="flex items-center gap-4">
-  <a href="https://twitter.com" target="_blank" rel="noreferrer">
-    <Twitter className="size-5 text-muted-foreground hover:text-foreground" />
-  </a>
 
-  <a href="https://instagram.com" target="_blank" rel="noreferrer">
-    <Instagram className="size-5 text-muted-foreground hover:text-foreground" />
-  </a>
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+              <Twitter className="w-5 h-5 text-muted-foreground hover:text-foreground transition" />
+            </a>
 
-  <a href="https://github.com" target="_blank" rel="noreferrer">
-    <Github className="size-5 text-muted-foreground hover:text-foreground" />
-  </a>
-</div>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+              <Instagram className="w-5 h-5 text-muted-foreground hover:text-foreground transition" />
+            </a>
+
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+              <Github className="w-5 h-5 text-muted-foreground hover:text-foreground transition" />
+            </a>
+
+          </div>
 
         </div>
 
