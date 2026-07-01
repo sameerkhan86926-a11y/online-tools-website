@@ -6,6 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://toolboxar-project.vercel.app/sitemap.xml',
+    sitemap: 'https://pdftoolbox.shop/sitemap.xml',
+    host: 'https://pdftoolbox.shop',
   }
 }
