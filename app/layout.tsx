@@ -22,25 +22,19 @@ export const metadata: Metadata = {
   },
 
   description:
-    'Free online PDF and image tools. Convert, compress, merge, split, edit PDFs and optimize images securely in your browser. No signup required.',
+    'Free online PDF and image tools. Convert, compress, merge, split, and edit PDFs instantly in your browser. Fast, secure, and no signup required.',
 
   keywords: [
     'PDF tools',
-    'Image tools',
-    'Compress PDF',
-    'Merge PDF',
-    'Split PDF',
-    'PDF to Image',
-    'Image to PDF',
-    'JPG to PNG',
-    'PNG to JPG',
-    'Online PDF converter',
-    'Free PDF tools',
+    'free PDF tools',
+    'image tools',
+    'compress PDF online',
+    'merge PDF',
+    'split PDF',
+    'PDF to image',
+    'image to PDF',
+    'online converter tools',
   ],
-
-  verification: {
-    google: 'BC0Gha8LWi95jKahYLbCvNSabSKM1miCB67wpdkyuCM',
-  },
 
   alternates: {
     canonical: '/',
@@ -52,13 +46,13 @@ export const metadata: Metadata = {
     siteName: 'PDFToolbox',
     title: 'PDFToolbox – Free PDF & Image Tools Online',
     description:
-      'Convert, compress, merge and edit PDFs and images online for free.',
+      'Convert, compress, merge and edit PDFs and images online for free. Fast and secure browser-based tools.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'PDFToolbox',
+        alt: 'PDFToolbox - Free Online Tools',
       },
     ],
   },
@@ -67,7 +61,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'PDFToolbox – Free PDF & Image Tools',
     description:
-      'Convert, compress, merge and edit PDFs & images online.',
+      'Free online tools to convert, compress and edit PDFs & images instantly.',
     images: ['/og-image.png'],
   },
 
@@ -95,22 +89,16 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: 'light dark',
   themeColor: [
-    {
-      media: '(prefers-color-scheme: light)',
-      color: 'white',
-    },
-    {
-      media: '(prefers-color-scheme: dark)',
-      color: 'black',
-    },
+    { media: '(prefers-color-scheme: light)', color: 'white' },
+    { media: '(prefers-color-scheme: dark)', color: 'black' },
   ],
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
     <html
       lang="en"
@@ -118,6 +106,8 @@ export default function RootLayout({
     >
       <body className="bg-background font-sans antialiased">
         {children}
+
+        {/* Vercel Analytics (production only) */}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
