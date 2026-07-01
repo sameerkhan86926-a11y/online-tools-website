@@ -14,14 +14,27 @@ export default function HomePage() {
       <SiteHeader />
 
       <main className="flex-1">
+
         <Hero />
 
-        {/* 🔥 AD 1 - TOP BANNER */}
+        {/* 🔥 SEO CONTENT (VERY IMPORTANT) */}
+        <section className="px-4 py-10 max-w-4xl mx-auto text-center">
+          <h2 className="text-2xl font-bold mb-4">
+            Free Online PDF & Image Tools
+          </h2>
+          <p className="text-gray-600">
+            PDFToolbox is a free online platform to compress, merge, split, convert and edit PDF files instantly.
+            You can also convert images and optimize files directly in your browser without any signup.
+            Fast, secure and simple tools for daily use.
+          </p>
+        </section>
+
+        {/* 🔥 AD 1 - TOP BANNER (SAFE ZONE) */}
         <AdBanner />
 
         <PopularTools />
 
-        {/* 🔥 AD 2 - NATIVE (High CTR zone) */}
+        {/* 🔥 AD 2 - NATIVE */}
         <AdNative />
 
         <CategoriesSection />
@@ -36,7 +49,7 @@ export default function HomePage() {
         {/* 🔥 AD 4 - FINAL NATIVE */}
         <AdNative />
 
-        {/* 🔥 EXIT BANNER */}
+        {/* 🔥 AD 5 - EXIT BANNER */}
         <AdBanner />
       </main>
 
