@@ -22,22 +22,25 @@ export const metadata: Metadata = {
   },
 
   description:
-    'Free online PDF and image tools. Convert, compress, merge, split, and edit PDFs instantly in your browser. Fast, secure, and no signup required.',
+    'Free online PDF and image tools to compress, merge, split, convert and edit files instantly. Fast, secure, and no signup required.',
 
   keywords: [
     'PDF tools',
     'free PDF tools',
-    'image tools',
     'compress PDF online',
     'merge PDF',
     'split PDF',
-    'PDF to image',
     'image to PDF',
-    'online converter tools',
+    'PDF converter online',
   ],
 
   alternates: {
     canonical: '/',
+  },
+
+  robots: {
+    index: true,
+    follow: true,
   },
 
   openGraph: {
@@ -46,13 +49,13 @@ export const metadata: Metadata = {
     siteName: 'PDFToolbox',
     title: 'PDFToolbox – Free PDF & Image Tools Online',
     description:
-      'Convert, compress, merge and edit PDFs and images online for free. Fast and secure browser-based tools.',
+      'Convert, compress, merge and edit PDFs and images online for free.',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'PDFToolbox - Free Online Tools',
+        alt: 'PDFToolbox',
       },
     ],
   },
@@ -61,7 +64,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'PDFToolbox – Free PDF & Image Tools',
     description:
-      'Free online tools to convert, compress and edit PDFs & images instantly.',
+      'Free online tools to convert and compress PDFs & images.',
     images: ['/og-image.png'],
   },
 
@@ -104,10 +107,37 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
+      <head>
+
+        {/* 🔥 SEO SCHEMA */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "PDFToolbox",
+              url: "https://pdftoolbox.shop",
+              description:
+                "Free online PDF and image tools to compress, merge, split and convert files instantly.",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://pdftoolbox.shop/search?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
+
+        {/* 🔥 Basic SEO safety */}
+        <meta name="theme-color" content="#000000" />
+        <meta name="application-name" content="PDFToolbox" />
+      </head>
+
       <body className="bg-background font-sans antialiased">
         {children}
 
-        {/* Vercel Analytics (production only) */}
+        {/* Analytics */}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>
