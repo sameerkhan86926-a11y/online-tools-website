@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { Wrench } from "lucide-react"
-import { tools, categories } from "@/lib/tools"
+import { Wrench, Github, Twitter, Instagram } from "lucide-react"
+import { tools } from "@/lib/tools"
 
 export function SiteFooter() {
   const pdfTools = tools.filter((t) => t.category === "PDF").slice(0, 5)
@@ -11,7 +11,7 @@ export function SiteFooter() {
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
 
         {/* TOP GRID */}
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-10 md:grid-cols-3">
 
           {/* BRAND */}
           <div className="space-y-4">
@@ -22,34 +22,18 @@ export function SiteFooter() {
               <span className="text-lg font-semibold">PDFToolbox</span>
             </Link>
 
-            <p className="text-sm text-muted-foreground leading-relaxed">
-              Free online PDF and image tools. Compress, merge, split and convert files instantly in your browser.
+            <p className="text-sm text-muted-foreground">
+              Free online PDF & image tools for fast and secure file processing.
             </p>
-
-            {/* SOCIAL LINKS */}
-            <div className="flex gap-3 pt-2">
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
-                Twitter
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
-                Instagram
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground">
-                GitHub
-              </a>
-            </div>
           </div>
 
-          {/* PDF TOOLS */}
+          {/* TOOLS */}
           <div>
             <h3 className="text-sm font-semibold">PDF Tools</h3>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-4 space-y-2">
               {pdfTools.map((t) => (
                 <li key={t.slug}>
-                  <Link
-                    href={`/tools/${t.slug}`}
-                    className="text-sm text-muted-foreground hover:text-foreground transition"
-                  >
+                  <Link href={`/tools/${t.slug}`} className="text-sm text-muted-foreground hover:text-foreground">
                     {t.name}
                   </Link>
                 </li>
@@ -57,68 +41,50 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* OTHER TOOLS */}
+          {/* OTHER */}
           <div>
-            <h3 className="text-sm font-semibold">Image & Convert</h3>
-            <ul className="mt-4 space-y-2.5">
+            <h3 className="text-sm font-semibold">Image Tools</h3>
+            <ul className="mt-4 space-y-2">
               {otherTools.map((t) => (
                 <li key={t.slug}>
-                  <Link
-                    href={`/tools/${t.slug}`}
-                    className="text-sm text-muted-foreground hover:text-foreground transition"
-                  >
+                  <Link href={`/tools/${t.slug}`} className="text-sm text-muted-foreground hover:text-foreground">
                     {t.name}
                   </Link>
                 </li>
               ))}
-            </ul>
-          </div>
-
-          {/* CATEGORIES + PAGES */}
-          <div>
-            <h3 className="text-sm font-semibold">Pages</h3>
-            <ul className="mt-4 space-y-2.5">
-
-              <li>
-                <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground">
-                  Privacy Policy
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
-                  Terms of Service
-                </Link>
-              </li>
-
-              <li>
-                <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
-                  Contact
-                </Link>
-              </li>
-
             </ul>
           </div>
 
         </div>
 
-        {/* BOTTOM BAR */}
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+        {/* BOTTOM SECTION */}
+        <div className="mt-12 border-t border-border pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
 
+          {/* COPYRIGHT */}
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} PDFToolbox. All rights reserved.
           </p>
 
-          <div className="flex gap-6">
-            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground">
-              Privacy
-            </Link>
-            <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
-              Terms
-            </Link>
-            <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
-              Support
-            </Link>
+          {/* LINKS */}
+          <div className="flex items-center gap-5 text-sm text-muted-foreground">
+            <Link href="/privacy-policy" className="hover:text-foreground">Privacy</Link>
+            <Link href="/terms" className="hover:text-foreground">Terms</Link>
+            <Link href="/contact" className="hover:text-foreground">Support</Link>
+          </div>
+
+          {/* SOCIAL ICONS */}
+          <div className="flex items-center gap-4">
+            <a href="https://twitter.com" target="_blank" className="hover:text-foreground text-muted-foreground">
+              <Twitter className="size-4" />
+            </a>
+
+            <a href="https://instagram.com" target="_blank" className="hover:text-foreground text-muted-foreground">
+              <Instagram className="size-4" />
+            </a>
+
+            <a href="https://github.com" target="_blank" className="hover:text-foreground text-muted-foreground">
+              <Github className="size-4" />
+            </a>
           </div>
 
         </div>
