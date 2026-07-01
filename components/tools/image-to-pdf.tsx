@@ -9,6 +9,7 @@ import { FileDropzone } from "@/components/file-dropzone"
 interface Page {
   id: string
   name: string
+  file: File
   url: string
 }
 
@@ -25,6 +26,7 @@ export function ImageToPdf() {
       .map((f) => ({
         id: crypto.randomUUID(),
         name: f.name,
+        file: f,
         url: URL.createObjectURL(f),
       }))
 
@@ -45,15 +47,23 @@ export function ImageToPdf() {
     })
   }
 
-  // ✅ SAFE IMAGE LOADER
-  function loadImg(src: string): Promise<HTMLImageElement> {
+  // ✅ SAFE IMAGE LOADER (IMPORTANT FIX)
+  function fileToImage(file: File): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const img = new Image()
+      const url = URL.createObjectURL(file)
 
-      img.onload = () => resolve(img)
-      img.onerror = () => reject(new Error("Image load failed"))
+      img.onload = () => {
+        URL.revokeObjectURL(url)
+        resolve(img)
+      }
 
-      img.src = src
+      img.onerror = () => {
+        URL.revokeObjectURL(url)
+        reject(new Error("Image load failed"))
+      }
+
+      img.src = url
     })
   }
 
@@ -71,7 +81,7 @@ export function ImageToPdf() {
       const margin = 24
 
       for (let i = 0; i < pages.length; i++) {
-        const img = await loadImg(pages[i].url)
+        const img = await fileToImage(pages[i].file)
 
         const maxW = pw - margin * 2
         const maxH = ph - margin * 2
@@ -87,7 +97,6 @@ export function ImageToPdf() {
         const x = (pw - w) / 2
         const y = (ph - h) / 2
 
-        // ✅ SAFE CANVAS
         const canvas = document.createElement("canvas")
         const ctx = canvas.getContext("2d")
 
@@ -96,26 +105,26 @@ export function ImageToPdf() {
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
 
-        // white background
+        // white background (fix transparency crash)
         ctx.fillStyle = "#ffffff"
         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
         ctx.drawImage(img, 0, 0)
 
-        if (canvas.width === 0 || canvas.height === 0) {
-          throw new Error("Invalid image")
-        }
-
-        // ✅ FIXED QUALITY
         const dataUrl = canvas.toDataURL("image/jpeg", 1.0)
 
+        if (!dataUrl || dataUrl.length < 1000) {
+          throw new Error("Invalid image conversion")
+        }
+
         if (i > 0) doc.addPage()
+
         doc.addImage(dataUrl, "JPEG", x, y, w, h)
       }
 
       doc.save("images.pdf")
     } catch (e) {
-      console.error(e)
+      console.error("PDF ERROR:", e)
       setError("Something went wrong while building the PDF. Please try again.")
     } finally {
       setBusy(false)
@@ -135,7 +144,7 @@ export function ImageToPdf() {
         accept="image/*"
         multiple
         onFiles={handleFiles}
-        hint="Select images, one per page"
+        hint="Select images (JPG/PNG only recommended)"
       />
 
       {error && (
@@ -157,42 +166,24 @@ export function ImageToPdf() {
 
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {pages.map((p, i) => (
-              <li
-                key={p.id}
-                className="group relative overflow-hidden rounded-xl border border-border bg-card"
-              >
+              <li key={p.id} className="relative rounded-xl border bg-card">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.url}
-                  alt={p.name}
-                  className="aspect-square w-full object-cover"
-                />
+                <img src={p.url} className="aspect-square w-full object-cover" />
 
-                <span className="absolute left-2 top-2 flex size-6 items-center justify-center rounded-md bg-primary text-xs font-semibold text-primary-foreground">
+                <span className="absolute left-2 top-2 bg-black text-white px-2 rounded">
                   {i + 1}
                 </span>
 
                 <button
                   onClick={() => remove(p.id)}
-                  className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md bg-background/90"
+                  className="absolute right-2 top-2 bg-white px-2 rounded"
                 >
                   <X className="size-4" />
                 </button>
 
-                <div className="absolute inset-x-2 bottom-2 flex gap-1.5 opacity-0 group-hover:opacity-100">
-                  <button
-                    onClick={() => move(i, -1)}
-                    className="flex flex-1 items-center justify-center rounded-md bg-background/90 py-1"
-                  >
-                    <ArrowUp className="size-4" />
-                  </button>
-
-                  <button
-                    onClick={() => move(i, 1)}
-                    className="flex flex-1 items-center justify-center rounded-md bg-background/90 py-1"
-                  >
-                    <ArrowDown className="size-4" />
-                  </button>
+                <div className="absolute bottom-2 flex w-full gap-2 px-2">
+                  <button onClick={() => move(i, -1)}>⬆</button>
+                  <button onClick={() => move(i, 1)}>⬇</button>
                 </div>
               </li>
             ))}
