@@ -45,13 +45,13 @@ export function ImageToPdf() {
     })
   }
 
-  async function loadImg(src: string): Promise<HTMLImageElement> {
+  // ✅ SAFE IMAGE LOADER
+  function loadImg(src: string): Promise<HTMLImageElement> {
     return new Promise((resolve, reject) => {
       const img = new Image()
-      img.crossOrigin = "anonymous"
 
       img.onload = () => resolve(img)
-      img.onerror = () => reject(new Error("Image failed to load"))
+      img.onerror = () => reject(new Error("Image load failed"))
 
       img.src = src
     })
@@ -87,7 +87,7 @@ export function ImageToPdf() {
         const x = (pw - w) / 2
         const y = (ph - h) / 2
 
-        // safe canvas
+        // ✅ SAFE CANVAS
         const canvas = document.createElement("canvas")
         const ctx = canvas.getContext("2d")
 
@@ -96,12 +96,18 @@ export function ImageToPdf() {
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
 
+        // white background
         ctx.fillStyle = "#ffffff"
         ctx.fillRect(0, 0, canvas.width, canvas.height)
 
         ctx.drawImage(img, 0, 0)
 
-        const dataUrl = canvas.toDataURL("image/jpeg", 0.92)
+        if (canvas.width === 0 || canvas.height === 0) {
+          throw new Error("Invalid image")
+        }
+
+        // ✅ FIXED QUALITY
+        const dataUrl = canvas.toDataURL("image/jpeg", 1.0)
 
         if (i > 0) doc.addPage()
         doc.addImage(dataUrl, "JPEG", x, y, w, h)
@@ -124,6 +130,7 @@ export function ImageToPdf() {
 
   return (
     <div className="space-y-6">
+
       <FileDropzone
         accept="image/*"
         multiple
@@ -139,8 +146,10 @@ export function ImageToPdf() {
 
       {pages.length > 0 && (
         <div className="space-y-4">
+
           <div className="flex items-center justify-between">
             <h2 className="font-semibold">Pages ({pages.length})</h2>
+
             <Button variant="ghost" size="sm" onClick={reset}>
               <RotateCcw className="size-4" /> Clear
             </Button>
@@ -193,6 +202,7 @@ export function ImageToPdf() {
             <Download className="size-4" />
             {busy ? "Building PDF..." : "Download PDF"}
           </Button>
+
         </div>
       )}
     </div>
