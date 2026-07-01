@@ -5,7 +5,6 @@ import { jsPDF } from "jspdf"
 import { Download, RotateCcw, X, ArrowUp, ArrowDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { FileDropzone } from "@/components/file-dropzone"
-import { loadImage } from "@/lib/file-utils"
 
 interface Page {
   id: string
@@ -20,9 +19,15 @@ export function ImageToPdf() {
 
   function handleFiles(files: File[]) {
     setError(null)
+
     const next = files
       .filter((f) => f.type.startsWith("image/"))
-      .map((f) => ({ id: crypto.randomUUID(), name: f.name, url: URL.createObjectURL(f) }))
+      .map((f) => ({
+        id: crypto.randomUUID(),
+        name: f.name,
+        url: URL.createObjectURL(f),
+      }))
+
     setPages((prev) => [...prev, ...next])
   }
 
@@ -40,42 +45,71 @@ export function ImageToPdf() {
     })
   }
 
+  async function loadImg(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.crossOrigin = "anonymous"
+
+      img.onload = () => resolve(img)
+      img.onerror = () => reject(new Error("Image failed to load"))
+
+      img.src = src
+    })
+  }
+
   async function generate() {
     if (pages.length === 0) return
+
     setBusy(true)
     setError(null)
+
     try {
       const doc = new jsPDF({ unit: "pt", format: "a4" })
+
       const pw = doc.internal.pageSize.getWidth()
       const ph = doc.internal.pageSize.getHeight()
       const margin = 24
 
       for (let i = 0; i < pages.length; i++) {
-        const img = await loadImage(pages[i].url)
+        const img = await loadImg(pages[i].url)
+
         const maxW = pw - margin * 2
         const maxH = ph - margin * 2
-        const ratio = Math.min(maxW / img.naturalWidth, maxH / img.naturalHeight)
+
+        const ratio = Math.min(
+          maxW / img.naturalWidth,
+          maxH / img.naturalHeight
+        )
+
         const w = img.naturalWidth * ratio
         const h = img.naturalHeight * ratio
+
         const x = (pw - w) / 2
         const y = (ph - h) / 2
 
-        // Render onto a canvas to normalize format
+        // safe canvas
         const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
+
+        if (!ctx) throw new Error("Canvas not supported")
+
         canvas.width = img.naturalWidth
         canvas.height = img.naturalHeight
-        const ctx = canvas.getContext("2d")
-        if (!ctx) throw new Error("Canvas not supported")
+
         ctx.fillStyle = "#ffffff"
         ctx.fillRect(0, 0, canvas.width, canvas.height)
+
         ctx.drawImage(img, 0, 0)
+
         const dataUrl = canvas.toDataURL("image/jpeg", 0.92)
 
         if (i > 0) doc.addPage()
         doc.addImage(dataUrl, "JPEG", x, y, w, h)
       }
+
       doc.save("images.pdf")
-    } catch {
+    } catch (e) {
+      console.error(e)
       setError("Something went wrong while building the PDF. Please try again.")
     } finally {
       setBusy(false)
@@ -90,9 +124,18 @@ export function ImageToPdf() {
 
   return (
     <div className="space-y-6">
-      <FileDropzone accept="image/*" multiple onFiles={handleFiles} hint="Select images, one per page" />
+      <FileDropzone
+        accept="image/*"
+        multiple
+        onFiles={handleFiles}
+        hint="Select images, one per page"
+      />
 
-      {error && <p className="rounded-xl bg-destructive/10 px-4 py-3 text-center text-sm text-destructive">{error}</p>}
+      {error && (
+        <p className="rounded-xl bg-destructive/10 px-4 py-3 text-center text-sm text-destructive">
+          {error}
+        </p>
+      )}
 
       {pages.length > 0 && (
         <div className="space-y-4">
@@ -102,36 +145,42 @@ export function ImageToPdf() {
               <RotateCcw className="size-4" /> Clear
             </Button>
           </div>
+
           <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             {pages.map((p, i) => (
-              <li key={p.id} className="group relative overflow-hidden rounded-xl border border-border bg-card">
+              <li
+                key={p.id}
+                className="group relative overflow-hidden rounded-xl border border-border bg-card"
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.url} alt={p.name} className="aspect-square w-full object-cover" />
+                <img
+                  src={p.url}
+                  alt={p.name}
+                  className="aspect-square w-full object-cover"
+                />
+
                 <span className="absolute left-2 top-2 flex size-6 items-center justify-center rounded-md bg-primary text-xs font-semibold text-primary-foreground">
                   {i + 1}
                 </span>
+
                 <button
-                  type="button"
                   onClick={() => remove(p.id)}
-                  className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md bg-background/90 text-foreground"
-                  aria-label={`Remove ${p.name}`}
+                  className="absolute right-2 top-2 flex size-6 items-center justify-center rounded-md bg-background/90"
                 >
                   <X className="size-4" />
                 </button>
-                <div className="absolute inset-x-2 bottom-2 flex gap-1.5 opacity-0 transition-opacity group-hover:opacity-100">
+
+                <div className="absolute inset-x-2 bottom-2 flex gap-1.5 opacity-0 group-hover:opacity-100">
                   <button
-                    type="button"
                     onClick={() => move(i, -1)}
-                    className="flex flex-1 items-center justify-center rounded-md bg-background/90 py-1 text-foreground"
-                    aria-label="Move earlier"
+                    className="flex flex-1 items-center justify-center rounded-md bg-background/90 py-1"
                   >
                     <ArrowUp className="size-4" />
                   </button>
+
                   <button
-                    type="button"
                     onClick={() => move(i, 1)}
-                    className="flex flex-1 items-center justify-center rounded-md bg-background/90 py-1 text-foreground"
-                    aria-label="Move later"
+                    className="flex flex-1 items-center justify-center rounded-md bg-background/90 py-1"
                   >
                     <ArrowDown className="size-4" />
                   </button>
@@ -139,8 +188,10 @@ export function ImageToPdf() {
               </li>
             ))}
           </ul>
+
           <Button className="w-full" disabled={busy} onClick={generate}>
-            <Download className="size-4" /> {busy ? "Building PDF…" : "Download PDF"}
+            <Download className="size-4" />
+            {busy ? "Building PDF..." : "Download PDF"}
           </Button>
         </div>
       )}
