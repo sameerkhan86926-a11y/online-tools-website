@@ -14,62 +14,47 @@ export default function HomePage() {
       <SiteHeader />
 
       <main className="flex-1">
-
         <Hero />
 
-        {/* 🔥 AD 1 - Banner */}
+        {/* 🔥 AD 1 - TOP BANNER */}
         <AdBanner />
 
         <PopularTools />
 
-        {/* 🔥 AD 2 - Native */}
+        {/* 🔥 AD 2 - NATIVE (High CTR zone) */}
         <AdNative />
 
         <CategoriesSection />
 
-        {/* 🔥 AD 3 - Banner */}
+        {/* 🔥 AD 3 - MID BANNER */}
         <AdBanner />
 
         <FeaturesSection />
 
         <FaqSection />
 
-        {/* 🔥 AD 4 - Native */}
+        {/* 🔥 AD 4 - FINAL NATIVE */}
         <AdNative />
 
-        {/* 🔥 AD 5 - Banner */}
+        {/* 🔥 EXIT BANNER */}
         <AdBanner />
-
       </main>
 
       <SiteFooter />
 
       {/* ================= GLOBAL ADS ================= */}
 
-      {/* 💣 POPUNDER */}
+      {/* POPUNDER */}
       <Script
-        src="https://pl30134372.effectivecpmnetwork.com/34/83/e0/3483e0d77fe2736cd10304773fb4dd40.js"
+        src="https://pl30153795.effectivecpmnetwork.com/29/7a/34/297a34a7b1c689eb98a34afc94895343.js"
         strategy="afterInteractive"
       />
 
-      {/* 💬 SOCIAL BAR */}
+      {/* SOCIAL BAR */}
       <Script
-        src="https://pl30134374.effectivecpmnetwork.com/2f/09/8c/2f098cd5648e743f8ab52af9790d0f03.js"
+        src="https://pl30153793.effectivecpmnetwork.com/f6144708d0cb8a2e0db4f9e8eb847487/invoke.js"
         strategy="afterInteractive"
       />
-
-      {/* 🔗 SMARTLINK (IMPORTANT) */}
-      <Script id="smartlink">
-        {`
-          window.onload = function() {
-            var a = document.createElement('a');
-            a.href = "https://www.effectivecpmnetwork.com/sehw5reg4b?key=ab303d2a1d38d6cb58b00a758d6477ae";
-            a.target = "_blank";
-            a.style.display = "none";
-            document.body.appendChild(a);
-          }
-        `}
-      </Script>
     </div>
   );
 }
@@ -77,22 +62,21 @@ export default function HomePage() {
 /* ================= BANNER AD ================= */
 function AdBanner() {
   return (
-    <div className="my-8 flex justify-center">
-
-      <Script id="banner-config">
+    <div className="my-10 flex justify-center">
+      <Script id="banner-config" strategy="afterInteractive">
         {`
-          atOptions = {
-            'key' : 'ecc4afc5b67ca88efe9cb93a11d4b9c5',
-            'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
-            'params' : {}
+          window.atOptions = {
+            key: '750f18151b48bf117eb6e23da4081f0b',
+            format: 'iframe',
+            height: 250,
+            width: 300,
+            params: {}
           };
         `}
       </Script>
 
       <Script
-        src="https://www.highperformanceformat.com/ecc4afc5b67ca88efe9cb93a11d4b9c5/invoke.js"
+        src="https://www.highperformanceformat.com/750f18151b48bf117eb6e23da4081f0b/invoke.js"
         strategy="afterInteractive"
       />
     </div>
@@ -102,12 +86,9 @@ function AdBanner() {
 /* ================= NATIVE AD ================= */
 function AdNative() {
   return (
-    <div className="my-10 flex justify-center">
-
-      <div id="container-c483387c5ce2665f5c8dc04518be2c7c"></div>
-
+    <div className="my-12 flex justify-center">
       <Script
-        src="https://pl30123077.effectivecpmnetwork.com/c483387c5ce2665f5c8dc04518be2c7c/invoke.js"
+        src="https://pl30153792.effectivecpmnetwork.com/29/8a/9d/298a9dc6555ab3c78c419cbefe39beb3.js"
         strategy="afterInteractive"
       />
     </div>
