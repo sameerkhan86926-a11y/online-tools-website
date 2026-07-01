@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { CookieBanner } from "@/components/cookie-banner"
 import './globals.css'
 
 const geistSans = Geist({
@@ -135,10 +136,12 @@ export default function RootLayout({
       </head>
 
       <body className="bg-background font-sans antialiased">
+        
         {children}
 
         {/* Analytics */}
         {process.env.NODE_ENV === 'production' && <Analytics />}
+        <CookieBanner />
       </body>
     </html>
   )
