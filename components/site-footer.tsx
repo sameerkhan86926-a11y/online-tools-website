@@ -74,18 +74,18 @@ export function SiteFooter() {
 
           {/* SOCIAL ICONS */}
           <div className="flex items-center gap-4">
-            <a href="https://twitter.com" target="_blank" className="hover:text-foreground text-muted-foreground">
-              <Twitter className="size-4" />
-            </a>
+  <a href="https://twitter.com" target="_blank" rel="noreferrer">
+    <Twitter className="size-5 text-muted-foreground hover:text-foreground" />
+  </a>
 
-            <a href="https://instagram.com" target="_blank" className="hover:text-foreground text-muted-foreground">
-              <Instagram className="size-4" />
-            </a>
+  <a href="https://instagram.com" target="_blank" rel="noreferrer">
+    <Instagram className="size-5 text-muted-foreground hover:text-foreground" />
+  </a>
 
-            <a href="https://github.com" target="_blank" className="hover:text-foreground text-muted-foreground">
-              <Github className="size-4" />
-            </a>
-          </div>
+  <a href="https://github.com" target="_blank" rel="noreferrer">
+    <Github className="size-5 text-muted-foreground hover:text-foreground" />
+  </a>
+</div>
 
         </div>
 
