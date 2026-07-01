@@ -105,6 +105,14 @@ export const tools: Tool[] = [
     icon: QrCode,
     accent: "bg-violet-50 text-violet-600",
   },
+  {
+  slug: "image-watermark",
+  name: "Image Watermark",
+  description: "Add text or logo watermark to images instantly.",
+  category: "Image",
+  icon: Replace,
+  accent: "bg-blue-50 text-blue-600",
+},
 ]
 
 export const categories: {
