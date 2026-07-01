@@ -24,7 +24,7 @@ export function downloadBlob(blob: Blob, filename: string) {
   URL.revokeObjectURL(url)
 }
 
-/** Download base64/dataURL */
+/** Download data URL */
 export function downloadDataUrl(dataUrl: string, filename: string) {
   const a = document.createElement("a")
 
@@ -35,35 +35,20 @@ export function downloadDataUrl(dataUrl: string, filename: string) {
   document.body.removeChild(a)
 }
 
-/** SAFE image loader (FIXED FOR ALL IMAGE TOOLS) */
-export function loadImage(src: Blob | string): Promise<HTMLImageElement> {
+/** SAFE image loader (USE ONLY IN COMPONENTS) */
+export function createImageFromFile(file: File): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
     const img = new Image()
-
-    img.crossOrigin = "anonymous"
-
-    const url =
-      typeof src === "string" ? src : URL.createObjectURL(src)
-
-    let loaded = false
+    const url = URL.createObjectURL(file)
 
     img.onload = () => {
-      loaded = true
-
-      // small delay ensures canvas ready
-      setTimeout(() => {
-        if (typeof src !== "string") {
-          URL.revokeObjectURL(url)
-        }
-        resolve(img)
-      }, 30)
+      URL.revokeObjectURL(url)
+      resolve(img)
     }
 
     img.onerror = () => {
-      if (!loaded && typeof src !== "string") {
-        URL.revokeObjectURL(url)
-      }
-      reject(new Error("Could not load image. Please try another file."))
+      URL.revokeObjectURL(url)
+      reject(new Error("Could not load image. Try another file."))
     }
 
     img.src = url
