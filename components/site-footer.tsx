@@ -9,19 +9,26 @@ export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-card">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
+
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+
+          {/* BRAND */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2">
               <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
                 <Wrench className="size-5" />
               </span>
-              <span className="text-lg font-semibold tracking-tight">Toolbox</span>
+              <span className="text-lg font-semibold tracking-tight">
+                Toolbox
+              </span>
             </Link>
+
             <p className="max-w-xs text-sm leading-relaxed text-muted-foreground">
-              Free, private online tools for your documents and images. Everything runs in your browser.
+              Free online tools for PDF and images. Compress, merge, split and convert files instantly in your browser.
             </p>
           </div>
 
+          {/* PDF TOOLS */}
           <div>
             <h3 className="text-sm font-semibold">PDF Tools</h3>
             <ul className="mt-4 space-y-2.5">
@@ -29,7 +36,7 @@ export function SiteFooter() {
                 <li key={t.slug}>
                   <Link
                     href={`/tools/${t.slug}`}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-sm text-muted-foreground hover:text-foreground"
                   >
                     {t.name}
                   </Link>
@@ -38,6 +45,7 @@ export function SiteFooter() {
             </ul>
           </div>
 
+          {/* IMAGE TOOLS */}
           <div>
             <h3 className="text-sm font-semibold">Image & Convert</h3>
             <ul className="mt-4 space-y-2.5">
@@ -45,7 +53,7 @@ export function SiteFooter() {
                 <li key={t.slug}>
                   <Link
                     href={`/tools/${t.slug}`}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-sm text-muted-foreground hover:text-foreground"
                   >
                     {t.name}
                   </Link>
@@ -54,6 +62,7 @@ export function SiteFooter() {
             </ul>
           </div>
 
+          {/* CATEGORIES */}
           <div>
             <h3 className="text-sm font-semibold">Categories</h3>
             <ul className="mt-4 space-y-2.5">
@@ -61,7 +70,7 @@ export function SiteFooter() {
                 <li key={c.name}>
                   <Link
                     href="/#tools"
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-sm text-muted-foreground hover:text-foreground"
                   >
                     {c.label}
                   </Link>
@@ -71,21 +80,27 @@ export function SiteFooter() {
           </div>
         </div>
 
+        {/* 🔥 FIXED LEGAL LINKS SECTION */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 sm:flex-row">
+
           <p className="text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} Toolbox. All rights reserved.
+            © {new Date().getFullYear()} Toolbox. All rights reserved.
           </p>
+
           <div className="flex items-center gap-6">
-            <Link href="/#faq" className="text-sm text-muted-foreground hover:text-foreground">
-              Privacy
+            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-foreground">
+              Privacy Policy
             </Link>
-            <Link href="/#faq" className="text-sm text-muted-foreground hover:text-foreground">
-              Terms
+
+            <Link href="/terms" className="text-sm text-muted-foreground hover:text-foreground">
+              Terms of Service
             </Link>
-            <Link href="/#faq" className="text-sm text-muted-foreground hover:text-foreground">
-              Help
+
+            <Link href="/contact" className="text-sm text-muted-foreground hover:text-foreground">
+              Contact
             </Link>
           </div>
+
         </div>
       </div>
     </footer>
