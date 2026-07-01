@@ -1,5 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
+import Script from 'next/script'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { CookieBanner } from "@/components/cookie-banner"
 import './globals.css'
@@ -108,11 +109,13 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
-      <head>
+      <body className="bg-background font-sans antialiased">
 
-        {/* 🔥 SEO SCHEMA */}
-        <script
+        {/* 🔥 SCHEMA (PROPER WAY) */}
+        <Script
+          id="schema-org"
           type="application/ld+json"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
@@ -121,27 +124,18 @@ export default function RootLayout({
               url: "https://pdftoolbox.shop",
               description:
                 "Free online PDF and image tools to compress, merge, split and convert files instantly.",
-              potentialAction: {
-                "@type": "SearchAction",
-                target: "https://pdftoolbox.shop/search?q={search_term_string}",
-                "query-input": "required name=search_term_string",
-              },
             }),
           }}
         />
 
-        {/* 🔥 Basic SEO safety */}
-        <meta name="theme-color" content="#000000" />
-        <meta name="application-name" content="PDFToolbox" />
-      </head>
-
-      <body className="bg-background font-sans antialiased">
-        
         {children}
 
-        {/* Analytics */}
+        {/* 🔥 ANALYTICS */}
         {process.env.NODE_ENV === 'production' && <Analytics />}
+
+        {/* 🔥 COOKIE BANNER */}
         <CookieBanner />
+
       </body>
     </html>
   )
